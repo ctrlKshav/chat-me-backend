@@ -1,1 +1,0 @@
-Hono backend for chat-me shopify app
