@@ -9,8 +9,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "dev-d1-chatme",
-      "database_id": "4991e43d-5ab2-49e7-af0c-98e7fea22d1b"
+      "database_name": "dev-d1-chatmedb",
+      "database_id": "9ccc7d06-9218-4596-b99b-8b87f5431326"
     }
   ],
   // "vars": {
