@@ -1,9 +1,8 @@
 import { LogSeverity, shopifyApi } from "@shopify/shopify-api";
 import "@shopify/shopify-api/adapters/node";
-import "dotenv/config";
-import appUninstallHandler from "../server/webhooks/app_uninstalled.js";
+import appUninstallHandler from "./webhooks/app_uninstalled.js";
 
-const isDev = process.env.NODE_ENV === "dev";
+const isDev = process.env.NODE_ENV === "development";
 
 // Setup Shopify configuration
 let shopify = shopifyApi({
@@ -36,7 +35,7 @@ shopify = {
   user: {
     /**
      * @type {Array<{
-     *   topics: import("../_developer/types/webhookTopics.js").WebhookTopics["topic"],
+     *   topics: import("@/_developer/types/webhookTopics.js").WebhookTopics["topic"],
      *   url: string,
      *   callback: Function,
      *   filter?: string,

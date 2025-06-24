@@ -1,8 +1,6 @@
 import { Session } from "@shopify/shopify-api";
-import Cryptr from "cryptr";
-import SessionModel from "./models/SessionModel.js";
-
-const cryption = new Cryptr(process.env.ENCRYPTION_STRING);
+import cryption from "./cryption.js";
+import prisma from "./prisma";
 
 /**
  * Stores the session data into the database.
@@ -11,14 +9,18 @@ const cryption = new Cryptr(process.env.ENCRYPTION_STRING);
  * @returns {Promise<boolean>} Returns true if the operation was successful.
  */
 const storeSession = async (session) => {
-  await SessionModel.findOneAndUpdate(
-    { id: session.id },
-    {
+  await prisma.session.upsert({
+    where: { id: session.id },
+    update: {
       content: cryption.encrypt(JSON.stringify(session)),
       shop: session.shop,
     },
-    { upsert: true }
-  );
+    create: {
+      id: session.id,
+      content: cryption.encrypt(JSON.stringify(session)),
+      shop: session.shop,
+    },
+  });
 
   return true;
 };
@@ -27,18 +29,17 @@ const storeSession = async (session) => {
  * Loads the session data from the database.
  *
  * @param {string} id - The session ID.
- * @returns {Promise<Session | undefined>} Returns the Shopify session object or
- *   undefined if not found.
+ * @returns {Promise<Session|undefined>} Returns the Shopify session object or undefined if not found.
  */
 const loadSession = async (id) => {
-  const sessionResult = await SessionModel.findOne({ id });
+  const sessionResult = await prisma.session.findUnique({ where: { id } });
+
   if (sessionResult === null) {
     return undefined;
   }
   if (sessionResult.content.length > 0) {
     const sessionObj = JSON.parse(cryption.decrypt(sessionResult.content));
-    const returnSession = new Session(sessionObj);
-    return returnSession;
+    return new Session(sessionObj);
   }
   return undefined;
 };
@@ -50,13 +51,13 @@ const loadSession = async (id) => {
  * @returns {Promise<boolean>} Returns true if the operation was successful.
  */
 const deleteSession = async (id) => {
-  await SessionModel.deleteMany({ id });
+  await prisma.session.deleteMany({ where: { id } });
+
   return true;
 };
 
 /**
- * Session handler object containing storeSession, loadSession, and
- * deleteSession functions.
+ * Session handler object containing storeSession, loadSession, and deleteSession functions.
  */
 const sessionHandler = { storeSession, loadSession, deleteSession };
 
