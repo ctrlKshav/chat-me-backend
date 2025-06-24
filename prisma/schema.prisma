@@ -8,16 +8,77 @@ datasource db {
   provider = "sqlite"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+model stores {
+  shop                                      String      @id
+  isActive                                  Boolean?    @default(false)
+  whatsapp_chat_count                       Int         @default(0)
+  shopify_id                                BigInt?
+  name                                      String?
+  email                                     String?
+  domain                                    String?
+  province                                  String?
+  country                                   String?
+  address1                                  String?
+  zip                                       String?
+  city                                      String?
+  phone                                     String?
+  latitude                                  Float?
+  longitude                                 Float?
+  primary_locale                            String?
+  address2                                  String?
+  created_at_shopify                        DateTime?
+  updated_at_shopify                        DateTime?
+  country_code                              String?
+  country_name                              String?
+  currency                                  String?
+  customer_email                            String?
+  timezone                                  String?
+  shop_owner                                String?
+  money_format                              String?
+  province_code                             String?
+  county_taxes                              Boolean?
+  plan_display_name                         String?
+  plan_name                                 String?
+  has_discounts                             Boolean?
+  has_gift_cards                            Boolean?
+  myshopify_domain                          String?
+  google_apps_domain                        String?
+  google_apps_login_enabled                 Boolean?
+  eligible_for_payments                     Boolean?
+  password_enabled                          Boolean?
+  has_storefront                            Boolean?
+  primary_location_id                       BigInt?
+  transactional_sms_disabled                Boolean?
+  marketing_sms_consent_enabled_at_checkout Boolean?
+  createdAt                                 DateTime    @default(now())
+  updatedAt                                 DateTime    @updatedAt
+  onboarding_email                          Boolean?
+  whatsapp_number                           String?
+  greeting_message                          String?     @default("We are here to help you! Chat with us on WhatsApp for any queries.")
+  whatsapp_message                          String?     @default("Hello, I'd like to know more about your products")
+  analytics                                 analytics[]
+
+  @@index([shop])
+  @@index([domain])
 }
 
-model Post {
-  id       Int    @id @default(autoincrement())
-  title    String
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId Int
+model session {
+  id      String  @id
+  content String?
+  shop    String?
+}
+
+model analytics {
+  id        Int      @id @default(autoincrement())
+  country   String
+  device    String
+  clicked   Int      @default(0)
+  page      String
+  shop      String
+  os        String
+  createdAt String
+  updatedAt DateTime @updatedAt
+  store     stores   @relation(fields: [shop], references: [shop])
+
+  @@unique([shop, page, createdAt], name: "analytics_unique_key")
 }
