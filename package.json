@@ -1,16 +1,14 @@
 {
   "name": "chat-me-backend",
-  "version": "2025.05.06",  
+  "version": "2025.05.06",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-
     "-----> utils <-----": "",
     "update": "ncu -u",
     "pretty": "prettier --write .",
-    
     "-----> Tunnel <-----": "",
     "ngrok:auth": "ngrok authtoken <your-auth-token>",
     "ngrok": "ngrok http 8081",
@@ -24,22 +22,24 @@
     "preserve": "npm run build"
   },
   "dependencies": {
-    "hono": "^4.8.2",
+    "@prisma/adapter-d1": "^6.10.1",
+    "@prisma/client": "^6.10.1",
     "@shopify/polaris": "^13.9.5",
     "@shopify/shopify-api": "^11.13.0",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
     "cryptr": "^6.3.0",
     "dotenv": "^16.5.0",
+    "hono": "^4.8.2",
     "serve-static": "^2.2.0"
   },
   "devDependencies": {
-    "wrangler": "^4.4.0",
     "@iarna/toml": "^2.2.5",
     "@shopify/cli-kit": "^3.80.7",
     "concurrently": "^9.1.2",
     "ngrok": "^5.0.0-beta.2",
     "npm-check-updates": "^18.0.1",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "wrangler": "^4.21.0"
   }
 }
