@@ -1,3 +1,8 @@
+Unlike the next repo, there are no auth routes in this backend because shopify has deprecated the legacy auth flow.
+Now we use shopify.toml and shopify automatically handles the installation auth flow.
+
+
+Deployment Steps
 ```txt
 npm install
 npm run dev

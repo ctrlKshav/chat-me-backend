@@ -1,14 +1,45 @@
 {
   "name": "chat-me-backend",
+  "version": "2025.05.06",  
+  "type": "module",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+
+    "-----> utils <-----": "",
+    "update": "ncu -u",
+    "pretty": "prettier --write .",
+    
+    "-----> Tunnel <-----": "",
+    "ngrok:auth": "ngrok authtoken <your-auth-token>",
+    "ngrok": "ngrok http 8081",
+    "cloudflare": "cloudflared tunnel --url localhost:8081",
+    "-----> Shopify <-----": "",
+    "g:install": "npm i -g @shopify/cli@latest",
+    "shopify": "shopify",
+    "update:config": "node _developer/tomlWriter.js; npm run pretty; shopify app deploy;",
+    "update:url": "node _developer/updateDashboard.js",
+    "-----> Reserved Scripts <-----": "",
+    "preserve": "npm run build"
   },
   "dependencies": {
-    "hono": "^4.8.2"
+    "hono": "^4.8.2",
+    "@shopify/polaris": "^13.9.5",
+    "@shopify/shopify-api": "^11.13.0",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "cryptr": "^6.3.0",
+    "dotenv": "^16.5.0",
+    "serve-static": "^2.2.0"
   },
   "devDependencies": {
-    "wrangler": "^4.4.0"
+    "wrangler": "^4.4.0",
+    "@iarna/toml": "^2.2.5",
+    "@shopify/cli-kit": "^3.80.7",
+    "concurrently": "^9.1.2",
+    "ngrok": "^5.0.0-beta.2",
+    "npm-check-updates": "^18.0.1",
+    "prettier": "^3.5.3"
   }
 }
