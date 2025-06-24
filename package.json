@@ -12,7 +12,7 @@
     "-----> Tunnel <-----": "",
     "ngrok:auth": "ngrok authtoken <your-auth-token>",
     "ngrok": "ngrok http 8081",
-    "cloudflare": "cloudflared tunnel --url localhost:8081",
+    "cloudflare": "cloudflared tunnel --url localhost:8787",
     "-----> Shopify <-----": "",
     "g:install": "npm i -g @shopify/cli@latest",
     "shopify": "shopify",
