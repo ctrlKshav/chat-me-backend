@@ -13,9 +13,11 @@
       "database_id": "9ccc7d06-9218-4596-b99b-8b87f5431326"
     }
   ],
-  // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
+  "vars": {
+    "SHOPIFY_API_SCOPES": "read_analytics, read_customer_events, read_customers,unauthenticated_read_customers,read_analytics",
+    "SHOPIFY_API_OPTIONAL_SCOPES": "",
+    "SHOPIFY_APP_VERSION": "2025-04"
+  },
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
