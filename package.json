@@ -13,18 +13,12 @@
     "ngrok:auth": "ngrok authtoken <your-auth-token>",
     "ngrok": "ngrok http 8081",
     "cloudflare": "cloudflared tunnel --url localhost:8787",
-    "-----> Shopify <-----": "",
-    "g:install": "npm i -g @shopify/cli@latest",
-    "shopify": "shopify",
-    "update:config": "node _developer/tomlWriter.js; npm run pretty; shopify app deploy;",
-    "update:url": "node _developer/updateDashboard.js",
     "-----> Reserved Scripts <-----": "",
     "preserve": "npm run build"
   },
   "dependencies": {
     "@prisma/adapter-d1": "^6.10.1",
     "@prisma/client": "^6.10.1",
-    "@shopify/polaris": "^13.9.5",
     "@shopify/shopify-api": "^11.13.0",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
@@ -35,7 +29,6 @@
   },
   "devDependencies": {
     "@iarna/toml": "^2.2.5",
-    "@shopify/cli-kit": "^3.80.7",
     "concurrently": "^9.1.2",
     "ngrok": "^5.0.0-beta.2",
     "npm-check-updates": "^18.0.1",
