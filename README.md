@@ -1,5 +1,5 @@
 Unlike the next repo, there are no auth routes in this backend because shopify has deprecated the legacy auth flow.
-Now we use shopify.toml and shopify automatically handles the installation auth flow.
+Now we our app uses shopify.toml and shopify automatically handles the installation auth flow.
 
 # Cloudflare D1
 Faced wrangler authentication issue while trying to create D1 database with the cli.
@@ -12,18 +12,18 @@ Hence we'll use wrangler to apply the migrations.
 
 # Deployment Steps
 ```txt
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 ```txt
-npm run deploy
+pnpm run deploy
 ```
 
 [For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
 
 ```txt
-npm run cf-typegen
+pnpm run cf-typegen
 ```
 
 Pass the `CloudflareBindings` as generics when instantiation `Hono`:
