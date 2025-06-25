@@ -10,7 +10,7 @@ import prisma from "../lib/prisma";
 
 const freshInstall = async ({ shop }) => {
   console.log("This is a fresh install - run functions");
-  await prisma.store.update({
+  await prisma.stores.update({
     where: {
       shop: shop,
     },

@@ -6,9 +6,8 @@ const proxyRouter = new Hono();
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  */
-proxyRouter.get("/json", async (c) => {
+proxyRouter.get("/debug", async (c) => {
   try {
-    console.log('hi')
     return c.json({ content: "Proxy Be Working" });
   } catch (e) {
     console.error(e);
@@ -18,7 +17,7 @@ proxyRouter.get("/json", async (c) => {
 
 proxyRouter.get("/getSettings", async (c) => {
 
-  const myShop = c.req.query.shop
+  const myShop = c.req.user_shop
   try {
     if (!myShop) {
       return c.json({ error: "No shop provided" });
@@ -40,7 +39,6 @@ proxyRouter.get("/getSettings", async (c) => {
         whatsapp_message: true,
       },
     });
-    console.info(settings);
     return c.json({ ...settings });
   } catch (e) {
     console.error(e);

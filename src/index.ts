@@ -1,6 +1,8 @@
 import { Hono } from 'hono'
 import { logger } from 'hono/logger'
 
+import { secureHeaders } from "hono/secure-headers"
+
 import sessionHandler from "./utils/sessionHandler.js";
 import setupCheck from "./utils/setupCheck.js";
 import shopify from "./utils/shopify.js";
@@ -60,7 +62,8 @@ app.post("/api/graphql", verifyRequest, async (c) => {
   }
 });
 
-app.use(csp);
+app.use(csp)
+
 app.use(isInitialLoad);
 
 //Routes to make server calls

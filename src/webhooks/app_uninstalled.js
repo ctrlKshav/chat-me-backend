@@ -13,7 +13,7 @@ const appUninstallHandler = async (
 ) => {
   /** @type {webhookTopic} */
   const webhookBody = JSON.parse(webhookRequestBody);
-  await prisma.store.update({
+  await prisma.stores.update({
     where: {
       shop: shop,
     },

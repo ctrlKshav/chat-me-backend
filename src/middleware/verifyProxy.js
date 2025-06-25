@@ -5,7 +5,7 @@ import crypto from "crypto";
  * @param {import('express').Response} res - Express response object
  * @param {import('express').NextFunction} next - Express next middleware function
  */
-const verifyProxy = (c, next) => {
+const verifyProxy = async (c, next) => {
 
   const query = c.req.query();
   if (!query.shop || !query.signature) {
@@ -30,8 +30,8 @@ const verifyProxy = (c, next) => {
     .digest("hex");
 
   if (calculatedSignature === signature) {
-    c.res.user_shop = query.shop;
-    next();
+    c.req.user_shop = query.shop;
+    await next();
   } else {
     return c.json({ error: "Unauthorized call" });
   }

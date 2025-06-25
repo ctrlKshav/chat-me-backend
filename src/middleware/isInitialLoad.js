@@ -3,15 +3,11 @@ import sessionHandler from "../utils/sessionHandler.js";
 import shopify from "../utils/shopify.js";
 import freshInstall from "../utils/freshInstall.js";
 import prisma from "../lib/prisma.js";
-/**
- * @param {import('express').Request} req - Express request object
- * @param {import('express').Response} res - Express response object
- * @param {import('express').NextFunction} next - Express next middleware function
- */
+
 const isInitialLoad = async (c, next) => {
   try {
-    const shop = c.req.query.shop;
-    const idToken = c.req.query.id_token;
+    const shop = c.req.query("shop");
+    const idToken = c.req.query("id_token");
 
     if (shop && idToken) {
       const { session: offlineSession } = await shopify.auth.tokenExchange({
@@ -32,7 +28,7 @@ const isInitialLoad = async (c, next) => {
         session: offlineSession,
       });
 
-      const isFreshInstall = await prisma.store.findUnique({
+      const isFreshInstall = await prisma.stores.findUnique({
         where: {
           shop: onlineSession.shop,
         },
@@ -46,7 +42,7 @@ const isInitialLoad = async (c, next) => {
 
       console.dir(webhookRegistrar, { depth: null });
     }
-    next();
+    await next();
   } catch (e) {
     console.error(`---> An error occured in isInitialLoad`, e);
     return c.json({ error: true });
