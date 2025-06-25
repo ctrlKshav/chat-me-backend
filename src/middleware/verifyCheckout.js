@@ -1,5 +1,5 @@
-import shopify from "../../utils/shopify.js";
-import validateJWT from "../../utils/validateJWT.js";
+import shopify from "../utils/shopify.js";
+import validateJWT from "../utils/validateJWT.js";
 
 /**
  * @param {import('express').Request} req - Express request object

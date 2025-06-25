@@ -3,9 +3,9 @@ import "dotenv/config";
 import cors from "cors";
 import Express from "express";
 import mongoose from "mongoose";
-import sessionHandler from "../utils/sessionHandler.js";
-import setupCheck from "../utils/setupCheck.js";
-import shopify from "../utils/shopify.js";
+import sessionHandler from "./utils/sessionHandler.js";
+import setupCheck from "./utils/setupCheck.js";
+import shopify from "./utils/shopify.js";
 import {
   customerDataRequest,
   customerRedact,

@@ -1,8 +1,8 @@
 import { RequestedTokenType } from "@shopify/shopify-api";
-import StoreModel from "../../utils/models/StoreModel.js";
-import sessionHandler from "../../utils/sessionHandler.js";
-import shopify from "../../utils/shopify.js";
-import freshInstall from "../../utils/freshInstall.js";
+import StoreModel from "../utils/models/StoreModel.js";
+import sessionHandler from "../utils/sessionHandler.js";
+import shopify from "../utils/shopify.js";
+import freshInstall from "../utils/freshInstall.js";
 
 /**
  * @param {import('express').Request} req - Express request object

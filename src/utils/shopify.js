@@ -1,7 +1,7 @@
 import { LogSeverity, shopifyApi } from "@shopify/shopify-api";
 import "@shopify/shopify-api/adapters/node";
 import "dotenv/config";
-import appUninstallHandler from "../src/webhooks/app_uninstalled.js";
+import appUninstallHandler from "../webhooks/app_uninstalled.js";
 
 const isDev = process.env.NODE_ENV === "dev";
 

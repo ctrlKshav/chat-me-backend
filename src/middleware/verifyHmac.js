@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import shopify from "../../utils/shopify.js";
+import shopify from "../utils/shopify.js";
 
 /**
  * @param {import('express').Request} req - Express request object

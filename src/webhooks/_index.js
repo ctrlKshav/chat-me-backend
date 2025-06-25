@@ -7,7 +7,7 @@
  * To update this file, run `npm run update:config` or `bun run update:config`
  */
 
-import shopify from "../../utils/shopify.js";
+import shopify from "../utils/shopify.js";
 import appUninstallHandler from "./app_uninstalled.js";
 
 const webhookHandler = async (req, res) => {
