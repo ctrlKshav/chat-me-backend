@@ -8,6 +8,9 @@ import crypto from "crypto";
 const verifyProxy = (c, next) => {
 
   const query = c.req.query();
+  if (!query.shop || !query.signature) {
+    return c.json({ error: "Unauthorized call" });
+  }
 
   const signature = query.signature
 
