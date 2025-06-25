@@ -12,7 +12,7 @@ proxyRouter.get("/json", async (c) => {
     return c.json({ content: "Proxy Be Working" });
   } catch (e) {
     console.error(e);
-    return c.json({ error: true });
+    return c.json({ error: e }, 500);
   }
 });
 

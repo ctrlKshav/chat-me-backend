@@ -59,14 +59,14 @@ app.use(isInitialLoad);
 
 //Routes to make server calls
 
-app.use("/api/apps", verifyRequest, userRoutes); //Verify user route requests
+app.route("/api/apps", userRoutes); //Verify user route requests
+app.use("/api/apps", verifyRequest)
 
-app.use("/api/proxy_route", verifyProxy, proxyRouter); //MARK:- App Proxy routes
-app.use(
-  "/api/checkout",
-  verifyCheckout,
-  checkoutRoutes
-);
+app.route("/api/proxy_route", proxyRouter); //MARK:- App Proxy routes
+app.use("/api/proxy_route", verifyProxy)
+
+app.route("/api/checkout", checkoutRoutes);
+app.use("/api/checkout", verifyCheckout)
 
 app.post("/api/gdpr/:topic", verifyHmac, async (c) => {
   const body = await c.req.parseBody();
