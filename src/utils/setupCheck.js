@@ -6,9 +6,6 @@ const setupCheck = () => {
     SHOPIFY_APP_URL: appUrl,
     SHOPIFY_API_VERSION: apiVersion,
     ENCRYPTION_STRING: encString,
-    PORT: port,
-    NPM_CONFIG_FORCE: forceInstall,
-    MONGO_URL: databaseURL,
   } = process.env;
 
   let errorCount = 0;
@@ -37,24 +34,6 @@ const setupCheck = () => {
   }
   if (typeof encString === "undefined") {
     console.error("---> Encryption String is undefined.");
-    errorCount++;
-  }
-  if (typeof port === "undefined") {
-    if (process.env.NODE_ENV !== "dev") {
-      console.warn("--> Port is undefined. Using 8081");
-      errorCount++;
-    }
-  }
-
-  if (typeof databaseURL === "undefined") {
-    console.error("---> Database string is undefined.");
-    errorCount++;
-  }
-
-  if (!forceInstall) {
-    console.error(
-      `--> Set NPM_CONFIG_FORCE to true so server uses "npm i --force" and install dependencies successfully`
-    );
     errorCount++;
   }
 
