@@ -1,5 +1,4 @@
-import "@shopify/shopify-api/adapters/node";
-import "dotenv/config";
+
 import sessionHandler from "./utils/sessionHandler.js";
 import setupCheck from "./utils/setupCheck.js";
 import shopify from "./utils/shopify.js";
