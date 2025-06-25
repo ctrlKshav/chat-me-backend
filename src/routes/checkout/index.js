@@ -1,16 +1,16 @@
-import { Router } from "express";
-const checkoutRoutes = Router();
+import { Hono } from "hono";
+const checkoutRoutes = new Hono();
 
 /**
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  */
-checkoutRoutes.get("/", async (req, res) => {
+checkoutRoutes.get("/", async (c) => {
   try {
-    return res.status(200).send({ message: "It works!" });
+    return c.json({ message: "It works!" });
   } catch (e) {
     console.error(`An error occured at /api/checkout`);
-    return res.status(400).send({ error: true });
+    return c.json({ error: true });
   }
 });
 

@@ -1,5 +1,4 @@
-import SessionModel from "../utils/models/SessionModel.js";
-import StoreModel from "../utils/models/StoreModel.js";
+import prisma from "../lib/prisma.js";
 
 /**
  * @typedef { import("../../_developer/types/2025-04/webhooks.js").APP_UNINSTALLED } webhookTopic
@@ -14,8 +13,15 @@ const appUninstallHandler = async (
 ) => {
   /** @type {webhookTopic} */
   const webhookBody = JSON.parse(webhookRequestBody);
-  await StoreModel.findOneAndUpdate({ shop }, { isActive: false });
-  await SessionModel.deleteMany({ shop });
+  await prisma.store.update({
+    where: {
+      shop: shop,
+    },
+    data: {
+      isActive: false,
+    },
+  });
+  await prisma.session.deleteMany({ where: { shop } });
 };
 
 export default appUninstallHandler;

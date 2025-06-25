@@ -1,6 +1,6 @@
 import { Session } from "@shopify/shopify-api";
 import Cryptr from "cryptr";
-import SessionModel from "./models/SessionModel.js";
+import prisma from "../lib/prisma";
 
 const cryption = new Cryptr(process.env.ENCRYPTION_STRING);
 
@@ -11,14 +11,15 @@ const cryption = new Cryptr(process.env.ENCRYPTION_STRING);
  * @returns {Promise<boolean>} Returns true if the operation was successful.
  */
 const storeSession = async (session) => {
-  await SessionModel.findOneAndUpdate(
-    { id: session.id },
-    {
+  await prisma.session.update({
+    where: {
+      id: session.id,
+    },
+    data: {
       content: cryption.encrypt(JSON.stringify(session)),
       shop: session.shop,
     },
-    { upsert: true }
-  );
+  });
 
   return true;
 };
@@ -31,7 +32,7 @@ const storeSession = async (session) => {
  *   undefined if not found.
  */
 const loadSession = async (id) => {
-  const sessionResult = await SessionModel.findOne({ id });
+  const sessionResult = await prisma.session.findUnique({ where: { id } });
   if (sessionResult === null) {
     return undefined;
   }
@@ -50,7 +51,7 @@ const loadSession = async (id) => {
  * @returns {Promise<boolean>} Returns true if the operation was successful.
  */
 const deleteSession = async (id) => {
-  await SessionModel.deleteMany({ id });
+  await prisma.session.delete({ where: { id } });
   return true;
 };
 

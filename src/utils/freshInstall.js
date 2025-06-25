@@ -5,15 +5,19 @@
  * `FreshInstall()` in isInitialLoad function.
  *
  */
-import StoreModel from "./models/StoreModel.js";
+
+import prisma from "../lib/prisma";
 
 const freshInstall = async ({ shop }) => {
   console.log("This is a fresh install - run functions");
-  await StoreModel.findOneAndUpdate(
-    { shop: shop },
-    { isActive: true },
-    { upsert: true }
-  );
+  await prisma.store.update({
+    where: {
+      shop: shop,
+    },
+    data: {
+      isActive: true,
+    },
+  });
 };
 
 export default freshInstall;

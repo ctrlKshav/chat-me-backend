@@ -1,9 +1,8 @@
 import { RequestedTokenType } from "@shopify/shopify-api";
-import StoreModel from "../utils/models/StoreModel.js";
 import sessionHandler from "../utils/sessionHandler.js";
 import shopify from "../utils/shopify.js";
 import freshInstall from "../utils/freshInstall.js";
-
+import prisma from "../lib/prisma.js";
 /**
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
@@ -33,8 +32,10 @@ const isInitialLoad = async (req, res, next) => {
         session: offlineSession,
       });
 
-      const isFreshInstall = await StoreModel.findOne({
-        shop: onlineSession.shop,
+      const isFreshInstall = await prisma.store.findUnique({
+        where: {
+          shop: onlineSession.shop,
+        },
       });
 
       if (!isFreshInstall || isFreshInstall?.isActive === false) {

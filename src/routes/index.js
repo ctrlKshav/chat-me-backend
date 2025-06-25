@@ -1,19 +1,19 @@
-import { Router } from "express";
+import { Hono } from "hono";
 import clientProvider from "../utils/clientProvider.js";
 
-const userRoutes = Router();
+const userRoutes = new Hono();
 
 /**
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  */
-userRoutes.get("/", (req, res) => {
+userRoutes.get("/", (c) => {
   try {
     const sendData = { text: "This is coming from /api/apps/ route." };
-    return res.status(200).json(sendData);
+    return c.json(sendData);
   } catch (e) {
     console.error(e);
-    return res.status(400).send({ error: true });
+    return c.json({ error: true });
   }
 });
 
@@ -21,12 +21,12 @@ userRoutes.get("/", (req, res) => {
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  */
-userRoutes.post("/", (req, res) => {
+userRoutes.post("/", (c) => {
   try {
-    return res.status(200).json(req.body);
+    return c.json(c.body);
   } catch (e) {
     console.error(e);
-    return res.status(400).send({ error: true });
+    return c.json({ error: true });
   }
 });
 
@@ -34,11 +34,11 @@ userRoutes.post("/", (req, res) => {
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  */
-userRoutes.get("/debug/gql", async (req, res) => {
+userRoutes.get("/debug/gql", async (c) => {
   try {
     //false for offline session, true for online session
     const { client } = await clientProvider.offline.graphqlClient({
-      shop: res.locals.user_session.shop,
+      shop: c.locals.user_session.shop,
     });
 
     const shop = await client.request(/* GraphQL */ `
@@ -49,10 +49,10 @@ userRoutes.get("/debug/gql", async (req, res) => {
       }
     `);
 
-    return res.status(200).json({ text: shop.data.shop.name });
+    return c.json({ text: shop.data.shop.name });
   } catch (e) {
     console.error(e);
-    return res.status(400).send({ error: true, text: "GQL Query broke" });
+    return c.json({ error: true, text: "GQL Query broke" });
   }
 });
 
@@ -60,10 +60,10 @@ userRoutes.get("/debug/gql", async (req, res) => {
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  */
-userRoutes.get("/debug/activeWebhooks", async (req, res) => {
+userRoutes.get("/debug/activeWebhooks", async (c) => {
   try {
     const { client } = await clientProvider.offline.graphqlClient({
-      shop: res.locals.user_session.shop,
+      shop: c.locals.user_session.shop,
     });
     const activeWebhooks = await client.request(/* GraphQL */ `
       {
@@ -82,10 +82,10 @@ userRoutes.get("/debug/activeWebhooks", async (req, res) => {
         }
       }
     `);
-    return res.status(200).json(activeWebhooks);
+    return c.json(activeWebhooks);
   } catch (e) {
     console.error(e);
-    return res.status(400).send({ error: true });
+    return c.json({ error: true });
   }
 });
 
@@ -93,10 +93,10 @@ userRoutes.get("/debug/activeWebhooks", async (req, res) => {
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  */
-userRoutes.get("/debug/getActiveSubscriptions", async (req, res) => {
+userRoutes.get("/debug/getActiveSubscriptions", async (c) => {
   try {
     const { client } = await clientProvider.offline.graphqlClient({
-      shop: res.locals.user_session.shop,
+      shop: c.locals.user_session.shop,
     });
     const response = await client.request(/* GraphQL */ `
       {
@@ -124,10 +124,10 @@ userRoutes.get("/debug/getActiveSubscriptions", async (req, res) => {
       }
     `);
 
-    return res.status(200).send(response);
+    return c.json(response);
   } catch (e) {
     console.error(e);
-    return res.status(400).send({ error: true });
+    return c.json({ error: true });
   }
 });
 
@@ -135,10 +135,10 @@ userRoutes.get("/debug/getActiveSubscriptions", async (req, res) => {
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  */
-userRoutes.get("/debug/createNewSubscription", async (req, res) => {
+userRoutes.get("/debug/createNewSubscription", async (c) => {
   try {
     const { client, shop } = await clientProvider.offline.graphqlClient({
-      shop: res.locals.user_session.shop,
+      shop: c.locals.user_session.shop,
     });
     const returnUrl = `${process.env.SHOPIFY_APP_URL}/?shop=${shop}`;
 
@@ -198,16 +198,16 @@ userRoutes.get("/debug/createNewSubscription", async (req, res) => {
         `--> Error subscribing ${shop} to plan:`,
         response.data.appSubscriptionCreate.userErrors
       );
-      res.status(400).send({ error: "An error occured." });
+      c.json({ error: "An error occured." });
       return;
     }
 
-    return res.status(200).send({
+    return c.json({
       confirmationUrl: `${response.data.appSubscriptionCreate.confirmationUrl}`,
     });
   } catch (e) {
     console.error(e);
-    return res.status(400).send({ error: true });
+    return c.json({ error: true });
   }
 });
 
