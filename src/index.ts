@@ -1,29 +1,35 @@
+import { Hono } from 'hono'
+import { logger } from 'hono/logger'
 
 import sessionHandler from "./utils/sessionHandler.js";
 import setupCheck from "./utils/setupCheck.js";
 import shopify from "./utils/shopify.js";
+
 import {
   customerDataRequest,
   customerRedact,
   shopRedact,
 } from "./controllers/gdpr.js";
+
 import csp from "./middleware/csp.js";
 import isInitialLoad from "./middleware/isInitialLoad.js";
 import verifyCheckout from "./middleware/verifyCheckout.js";
 import verifyHmac from "./middleware/verifyHmac.js";
 import verifyProxy from "./middleware/verifyProxy.js";
 import verifyRequest from "./middleware/verifyRequest.js";
+
 import proxyRouter from "./routes/app_proxy/index.js";
 import checkoutRoutes from "./routes/checkout/index.js";
 import userRoutes from "./routes/index.js";
+
 import webhookHandler from "./webhooks/_index.js";
 
-import { Hono } from 'hono'
 
 setupCheck(); // Run a check to ensure everything is setup properly
 
-
 const app = new Hono()
+
+app.use(logger())
 
 app.get("/", (c) => {
   return c.text("Hello World!");
@@ -59,14 +65,14 @@ app.use(isInitialLoad);
 
 //Routes to make server calls
 
+app.use("/api/apps/*", verifyRequest)
 app.route("/api/apps", userRoutes); //Verify user route requests
-app.use("/api/apps", verifyRequest)
 
+app.use("/api/proxy_route/*", verifyProxy)
 app.route("/api/proxy_route", proxyRouter); //MARK:- App Proxy routes
-app.use("/api/proxy_route", verifyProxy)
 
+app.use("/api/checkout/*", verifyCheckout)
 app.route("/api/checkout", checkoutRoutes);
-app.use("/api/checkout", verifyCheckout)
 
 app.post("/api/gdpr/:topic", verifyHmac, async (c) => {
   const body = await c.req.parseBody();
