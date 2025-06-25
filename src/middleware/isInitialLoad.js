@@ -8,10 +8,10 @@ import prisma from "../lib/prisma.js";
  * @param {import('express').Response} res - Express response object
  * @param {import('express').NextFunction} next - Express next middleware function
  */
-const isInitialLoad = async (req, res, next) => {
+const isInitialLoad = async (c, next) => {
   try {
-    const shop = req.query.shop;
-    const idToken = req.query.id_token;
+    const shop = c.req.query.shop;
+    const idToken = c.req.query.id_token;
 
     if (shop && idToken) {
       const { session: offlineSession } = await shopify.auth.tokenExchange({
@@ -49,7 +49,7 @@ const isInitialLoad = async (req, res, next) => {
     next();
   } catch (e) {
     console.error(`---> An error occured in isInitialLoad`, e);
-    return res.status(403).send({ error: true });
+    return c.json({ error: true });
   }
 };
 

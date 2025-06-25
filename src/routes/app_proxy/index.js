@@ -8,9 +8,7 @@ const proxyRouter = new Hono();
  */
 proxyRouter.get("/json", async (c) => {
   try {
-    const { client } = await clientProvider.offline.graphqlClient({
-      shop: c.locals.user_shop,
-    });
+    console.log('hi')
     return c.json({ content: "Proxy Be Working" });
   } catch (e) {
     console.error(e);

@@ -5,10 +5,11 @@ import crypto from "crypto";
  * @param {import('express').Response} res - Express response object
  * @param {import('express').NextFunction} next - Express next middleware function
  */
-const verifyProxy = (req, res, next) => {
-  const { signature } = req.query;
+const verifyProxy = (c, next) => {
+  console.log("proxy middleware hit")
+  const { signature } = c.req.query;
 
-  const queryURI = req._parsedUrl.query
+  const queryURI = c.req._parsedUrl.query
     .replace("/?", "")
     .replace(/&signature=[^&]*/, "")
     .split("&")
@@ -22,10 +23,10 @@ const verifyProxy = (req, res, next) => {
     .digest("hex");
 
   if (calculatedSignature === signature) {
-    res.locals.user_shop = req.query.shop;
+    c.res.user_shop = c.req.query.shop;
     next();
   } else {
-    return res.send(401);
+    return c.json({ error: "Unauthorized call" });
   }
 };
 

@@ -8,9 +8,9 @@ import { RequestedTokenType, Session } from "@shopify/shopify-api";
  * @param {import('express').Response} res - Express response object
  * @param {import('express').NextFunction} next - Express next middleware function
  */
-const verifyRequest = async (req, res, next) => {
+const verifyRequest = async (c, next) => {
   try {
-    const authHeader = req.headers["authorization"];
+    const authHeader = c.req.header("authorization");
     if (!authHeader) {
       throw Error("No authorization header found");
     }
@@ -25,8 +25,8 @@ const verifyRequest = async (req, res, next) => {
 
     const sessionId = await shopify.session.getCurrentId({
       isOnline: true,
-      rawRequest: req,
-      rawResponse: res,
+      rawRequest: c.req,
+      rawResponse: c.res,
     });
 
     let session = await sessionHandler.loadSession(sessionId);
@@ -41,13 +41,13 @@ const verifyRequest = async (req, res, next) => {
     } else {
       session = await getSession({ shop, authHeader });
     }
-    res.locals.user_session = session;
+    c.res.user_session = session;
     next();
   } catch (e) {
     console.error(
       `---> An error happened at verifyRequest middleware: ${e.message}`
     );
-    return res.status(401).send({ error: "Unauthorized call" });
+    return c.json({ error: "Unauthorized call" });
   }
 };
 
