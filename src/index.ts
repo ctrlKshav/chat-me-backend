@@ -18,7 +18,7 @@ import verifyHmac from "./middleware/verifyHmac.js";
 import verifyRequest from "./middleware/verifyRequest.js";
 
 import proxyRouter from "./routes/app_proxy/index.js";
-import checkoutRoutes from "./routes/checkout/index.js";
+import checkoutRouter from "./routes/checkout/index.js";
 import appRouter from "./routes/app_routes/index.js";
 
 import webhookHandler from "./webhooks/_index.js";
@@ -69,8 +69,7 @@ app.route("/api/apps", appRouter); //App routes
 
 app.route("/api/proxy_route", proxyRouter); //App Proxy routes
 
-app.use("/api/checkout/*", verifyCheckout)
-app.route("/api/checkout", checkoutRoutes);
+app.route("/api/checkout", checkoutRouter);
 
 app.post("/api/gdpr/:topic", verifyHmac, async (c) => {
   const body = await c.req.parseBody();

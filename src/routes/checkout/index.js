@@ -1,7 +1,8 @@
 import { Hono } from "hono";
-const checkoutRoutes = new Hono();
+import verifyCheckout from "../../middleware/verifyCheckout.js";
+const checkoutRouter = new Hono();
 
-checkoutRoutes.get("/", async (c) => {
+checkoutRouter.get("/", verifyCheckout, async (c) => {
   try {
     return c.json({ message: "It works!" });
   } catch (e) {
@@ -10,4 +11,4 @@ checkoutRoutes.get("/", async (c) => {
   }
 });
 
-export default checkoutRoutes;
+export default checkoutRouter;
