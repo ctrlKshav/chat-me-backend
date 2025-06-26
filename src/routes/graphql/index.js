@@ -5,7 +5,7 @@ import verifyRequest from "../../middleware/verifyRequest.js";
 
 const graphQLRouter = new Hono();
 
-graphQLRouter.post("/graphql", verifyRequest, graphQLHandler);
+graphQLRouter.post("/", verifyRequest, graphQLHandler);
 
 const graphQLHandler = async (c) => {
     try {
