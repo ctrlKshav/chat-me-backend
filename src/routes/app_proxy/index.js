@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import debugRouter from "./debug/index.js"
+import { debugRouter } from "./debug/index.js"
 import getSettingsAPI from "./getSettings.js"
 import addAnalyticsAPI from "./addAnalytics.js"
 import verifyProxy from "../../middleware/verifyProxy.js"

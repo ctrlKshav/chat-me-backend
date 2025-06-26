@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import debugRouter from "./debug/index.js"
+import { debugRouter } from "./debug/index.js"
 import verifyRequest from "../../middleware/verifyRequest.js"
 
 const appRouter = new Hono();
