@@ -5,7 +5,7 @@ import addAnalyticsDebugAPI from "./addAnalytics.js"
 
 export const debugRouter = new Hono();
 
-debugRouter.get("/debug", async (c) => {
+debugRouter.get("/", async (c) => {
     try {
         return c.json({ content: "Proxy Be Working" });
     } catch (e) {
@@ -14,6 +14,6 @@ debugRouter.get("/debug", async (c) => {
     }
 });
 
-debugRouter.get("/debug/getSettings", getSettingsDebugAPI)
+debugRouter.get("/getSettings", getSettingsDebugAPI)
 
-debugRouter.get("/debug/addAnalytics", addAnalyticsDebugAPI)
+debugRouter.get("/addAnalytics", addAnalyticsDebugAPI)
