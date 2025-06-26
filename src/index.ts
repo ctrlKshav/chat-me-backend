@@ -71,7 +71,6 @@ app.use(isInitialLoad);
 app.use("/api/apps/*", verifyRequest)
 app.route("/api/apps", userRoutes); //Verify user route requests
 
-app.use("/api/proxy_route/*", verifyProxy)
 app.route("/api/proxy_route", proxyRouter); //MARK:- App Proxy routes
 
 app.use("/api/checkout/*", verifyCheckout)
