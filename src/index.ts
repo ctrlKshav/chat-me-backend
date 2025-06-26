@@ -5,11 +5,7 @@ import sessionHandler from "./utils/sessionHandler.js";
 import setupCheck from "./utils/setupCheck.js";
 import shopify from "./utils/shopify.js";
 
-import {
-  customerDataRequest,
-  customerRedact,
-  shopRedact,
-} from "./controllers/gdpr.js";
+import gdprHandlers from "./controllers/gdpr.js";
 
 import csp from "./middleware/csp.js";
 import isInitialLoad from "./middleware/isInitialLoad.js";
@@ -68,43 +64,9 @@ app.route("/api/apps", appRouter); //App routes
 
 app.route("/api/proxy_route", proxyRouter); //App Proxy routes
 
-app.route("/api/checkout", checkoutRouter);
+app.route("/api/checkout", checkoutRouter);// Checkout Route
 
-app.post("/api/gdpr/:topic", verifyHmac, async (c) => {
-  const body = await c.req.parseBody();
-  const topic = c.req.param("topic");
-  const shop = body.shop_domain;
-
-  console.warn(`--> GDPR request for ${shop} / ${topic} recieved.`);
-
-  let response;
-  switch (topic) {
-    case "customers_data_request":
-      response = await customerDataRequest(topic, shop, body);
-      break;
-    case "customers_redact":
-      response = await customerRedact(topic, shop, body);
-      break;
-    case "shop_redact":
-      response = await shopRedact(topic, shop, body);
-      break;
-    default:
-      console.error(
-        "--> Congratulations on breaking the GDPR route! Here's the topic that broke it: ",
-        topic
-      );
-      response = "broken";
-      break;
-  }
-
-  if (response.success) {
-    return c.json({ success: true });
-  } else {
-    return c.json({ success: false });
-  }
-});
-
-
+app.post("/api/gdpr/:topic", verifyHmac, ...gdprHandlers);// GDPR Route
 
 
 export default app;

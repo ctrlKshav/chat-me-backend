@@ -1,3 +1,42 @@
+import { createFactory } from "hono/factory";
+import verifyHmac from "../middleware/verifyHmac";
+
+const factory = createFactory();
+
+const gdprHandlers = factory.createHandlers(verifyHmac, async (c) => {
+  const body = await c.req.parseBody();
+  const topic = c.req.param("topic");
+  const shop = body.shop_domain;
+
+  console.warn(`--> GDPR request for ${shop} / ${topic} recieved.`);
+
+  let response;
+  switch (topic) {
+    case "customers_data_request":
+      response = await customerDataRequest(topic, shop, body);
+      break;
+    case "customers_redact":
+      response = await customerRedact(topic, shop, body);
+      break;
+    case "shop_redact":
+      response = await shopRedact(topic, shop, body);
+      break;
+    default:
+      console.error(
+        "--> Congratulations on breaking the GDPR route! Here's the topic that broke it: ",
+        topic
+      );
+      response = "broken";
+      break;
+  }
+
+  if (response.success) {
+    return c.json({ success: true });
+  } else {
+    return c.json({ success: false });
+  }
+});
+
 /**
  *
  * CUSTOMER_DATA_REQUEST
@@ -88,3 +127,5 @@ const shopRedact = async (topic, shop, webhookRequestBody) => {
 };
 
 export { customerDataRequest, customerRedact, shopRedact };
+
+export default gdprHandlers;
