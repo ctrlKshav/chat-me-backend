@@ -13,7 +13,6 @@ import {
 
 import csp from "./middleware/csp.js";
 import isInitialLoad from "./middleware/isInitialLoad.js";
-import verifyCheckout from "./middleware/verifyCheckout.js";
 import verifyHmac from "./middleware/verifyHmac.js";
 import verifyRequest from "./middleware/verifyRequest.js";
 
@@ -108,4 +107,4 @@ app.post("/api/gdpr/:topic", verifyHmac, async (c) => {
 
 
 
-export default app
+export default app;
